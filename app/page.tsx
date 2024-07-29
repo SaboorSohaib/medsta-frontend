@@ -1,7 +1,14 @@
-import Image from "next/image";
+import Navbar from "./genral/navbar";
+import HomePageBanner from "./genral/home-page-banner";
 
 const Home = () => {
-  return <main className="">This is Home Page</main>;
+  return (
+    <main className="">
+      <Navbar />
+      <HomePageBanner />
+      This is Home Page
+    </main>
+  );
 };
 
 export default Home;
