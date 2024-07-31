@@ -1,7 +1,10 @@
-import Image from "next/image";
+"use client";
 
 const Home = () => {
-  return <main className="">This is Home Page</main>;
+  return (
+    <main>
+      <p>This is Home Page</p>{" "}
+    </main>
+  );
 };
-
 export default Home;
