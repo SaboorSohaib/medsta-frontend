@@ -1,10 +1,12 @@
-import React from "react";
+'use client';
+import React, { useState } from 'react';
+import AdminLayout from './adminDashboard';
 
 const page = () => {
   return (
-    <div>
+    <AdminLayout>
       <h1>Admin Dashboard</h1>
-    </div>
+    </AdminLayout>
   );
 };
 

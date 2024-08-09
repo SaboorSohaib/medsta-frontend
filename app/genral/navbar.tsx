@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { IoSearchOutline, IoCloseSharp } from 'react-icons/io5';
