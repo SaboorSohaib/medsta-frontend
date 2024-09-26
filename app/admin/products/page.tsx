@@ -116,7 +116,7 @@ const Products = () => {
             <Pagination>
               <PaginationContent>
                 <Button
-                  className="bg-white text-black hover:bg-white"
+                  className="bg-gray-100 hover:bg-gray-100 text-black"
                   disabled={page === 1}
                 >
                   <PaginationPrevious
@@ -138,7 +138,7 @@ const Products = () => {
                   </PaginationItem>
                 ))}
                 <Button
-                  className="bg-white text-black hover:bg-white"
+                  className="bg-gray-100 hover:bg-gray-100 text-black"
                   disabled={page === totalPages}
                 >
                   <PaginationNext
