@@ -90,7 +90,6 @@ const CreateOrUpdateProducts = ({
   const [updateProduct] = useUpdateProductMutation();
   const { data } = useGetCategoriesQuery({});
   const onSubmit = async (data: any) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
     const ProductData = {
       product_price: Number(data.product_price),
       product_title: data.product_title,
