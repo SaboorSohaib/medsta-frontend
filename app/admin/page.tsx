@@ -1,11 +1,8 @@
-import React from "react";
+'use client';
+import React, { useState } from 'react';
 
 const page = () => {
-  return (
-    <div>
-      <h1>Admin Dashboard</h1>
-    </div>
-  );
+  return <h1>Admin Dashboard</h1>;
 };
 
 export default page;

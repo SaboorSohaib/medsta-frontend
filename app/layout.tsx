@@ -1,15 +1,17 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import { Providers } from '@/redux/provider';
-import Navbar from './genral/navbar';
-import Footer from './genral/footer';
+// "use client";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Providers } from "@/redux/provider";
+import Navbar from "./customComponents/Navbar";
+import Footer from "./customComponents/Footer";
+import React from "react";
+import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({ subsets: ['latin'] });
-
+const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
-  title: 'Medsta',
-  description: 'Medsta',
+  title: "Medsta",
+  description: "Medsta Store",
 };
 
 export default function RootLayout({
@@ -18,11 +20,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <Providers>{children}</Providers>
-        <Footer />
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
+        <Toaster />
       </body>
     </html>
   );
