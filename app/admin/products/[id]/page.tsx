@@ -41,7 +41,7 @@ const SingleProduct = () => {
               </div>
               <div className="flex items-center gap-x-1">
                 <p className="text-lg font-bold">Category:</p>
-                <p>{data?.data?.category_id?.category_name}</p>
+                <p>{data?.data?.category?.category_name}</p>
               </div>
               <div className="flex items-center gap-x-1">
                 <p className="text-lg font-bold">Manufacturing:</p>

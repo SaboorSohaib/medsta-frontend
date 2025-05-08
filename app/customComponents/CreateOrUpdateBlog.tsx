@@ -27,6 +27,7 @@ import { useGetCurrentUserQuery } from "@/redux/api/userApi";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { log } from "console";
 
 const CreateOrUpdateBlog = ({
   isEdit,
@@ -43,8 +44,11 @@ const CreateOrUpdateBlog = ({
       .max(20, "Blog title cannot exceed 20 characters"),
     blog_description: z.string().min(1, "Blog description is required"),
     blog_author: z.string().min(1, "Blog author is required"),
-    category_id: z.number().positive(),
-    blog_photo: z.string().nonempty("Blog photo is required"),
+    category_id: z.object(
+      { label: z.string(), value: z.string() },
+      { message: "Category is required" }
+    ),
+    // blog_photo: z.string().nonempty("Blog photo is required"),
   });
 
   const {
@@ -65,10 +69,11 @@ const CreateOrUpdateBlog = ({
             label: `${blogData?.category_id?.category_name}`,
             value: `${blogData?.category_id?.id}`,
           }
-        : "",
+        : undefined,
       blog_photo: isEdit ? blogData?.blog_photo : "",
     },
   });
+
   const router = useRouter();
   const { toast } = useToast();
   const [createBlog, { isLoading }] = useCreateBlogMutation();
@@ -76,13 +81,13 @@ const CreateOrUpdateBlog = ({
   const { data: currentUser } = useGetCurrentUserQuery(null);
   const { data } = useGetCategoriesQuery({});
   const onSubmit = async (data: any) => {
-    let userId = currentUser?.id;
+    let userId = currentUser?.data?.id;
     const BlogData = {
       blog_title: data.blog_title,
       blog_description: data.blog_description,
       blog_author: data.blog_author,
-      blog_photo: data.blog_photo,
-      category_id: data.category_id.value,
+      blog_photo: "https://ik.imagekit.io/gbfjo9pxy/customer_4nma_rYDU.jpg",
+      category_id: data?.category_id?.value,
       user_id: userId,
     };
     try {
@@ -142,7 +147,7 @@ const CreateOrUpdateBlog = ({
             isEdit ? "Update Blog" : "Create Blog"
           }`}</DialogTitle>
           <DialogDescription>
-            Make changes to your blog here. Click save when you're done.
+            Make changes to your blog here. Click create when you're done.
           </DialogDescription>
         </DialogHeader>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -211,7 +216,7 @@ const CreateOrUpdateBlog = ({
                 {...register("blog_description")}
               />
               {errors?.blog_description?.message && (
-                <p className=" text-red-700 mt-1">
+                <p className=" text-red-700 -mt-1">
                   {errors.blog_description.message as any}
                 </p>
               )}
@@ -231,7 +236,7 @@ const CreateOrUpdateBlog = ({
                             label: `${blogData?.category_id?.category_name}`,
                             value: `${blogData?.category_id?.id}`,
                           }
-                        : ""
+                        : undefined
                     }
                     rules={{ required: "Category is required" }}
                     render={({ field }) => (
@@ -283,12 +288,19 @@ const CreateOrUpdateBlog = ({
                         placeholder="Category"
                         options={categories}
                         onChange={(selectedOption) => {
-                          field.onChange(selectedOption);
+                          field.onChange(
+                            selectedOption ? selectedOption : null
+                          );
                         }}
                         value={field.value}
                       />
                     )}
                   />
+                  {errors?.category_id?.message && (
+                    <p className=" text-red-700 mt-1">
+                      {errors.category_id.message as any}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

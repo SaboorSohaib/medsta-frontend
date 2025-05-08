@@ -1,7 +1,7 @@
-'use client';
-import React, { ReactNode, useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next/link';
+"use client";
+import React, { ReactNode, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   CircleUser,
   Home,
@@ -13,10 +13,10 @@ import {
   Package2,
   ShoppingCart,
   Users,
-} from 'lucide-react';
-import '../globals.css';
-
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import "../globals.css";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,40 +24,42 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useSignoutMutation } from '@/redux/api/authApi';
-import Search from '../customComponents/Search';
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useSignoutMutation } from "@/redux/api/authApi";
+import Search from "../customComponents/Search";
+import { toast } from "@/hooks/use-toast";
 
 interface AdminLayoutProps {
   children: ReactNode; // Correctly typing the children prop
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
-  const [activeTab, setactiveTab] = useState('Admin');
+  const [activeTab, setactiveTab] = useState("Admin");
+  const { toast } = useToast();
   const pathname = usePathname();
   const setActiveTab = (tab: string) => {
     setactiveTab(tab);
   };
 
   useEffect(() => {
-    if (pathname.includes('/admin/productReviews')) {
-      setActiveTab('Product Reviews');
-    } else if (pathname.includes('/admin/customers')) {
-      setActiveTab('Customers');
-    } else if (pathname.includes('/admin/products')) {
-      setActiveTab('Products');
-    } else if (pathname.includes('/admin/categories')) {
-      setActiveTab('Categories');
-    } else if (pathname.includes('/admin/blogs')) {
-      setActiveTab('Blogs');
-    } else if (pathname.includes('/admin')) {
-      setActiveTab('Admin');
-    } else if (pathname.includes('/admin/orders')) {
-      setActiveTab('Orders');
+    if (pathname.includes("/admin/productReviews")) {
+      setActiveTab("Product Reviews");
+    } else if (pathname.includes("/admin/customers")) {
+      setActiveTab("Customers");
+    } else if (pathname.includes("/admin/products")) {
+      setActiveTab("Products");
+    } else if (pathname.includes("/admin/categories")) {
+      setActiveTab("Categories");
+    } else if (pathname.includes("/admin/blogs")) {
+      setActiveTab("Blogs");
+    } else if (pathname.includes("/admin")) {
+      setActiveTab("Admin");
+    } else if (pathname.includes("/admin/orders")) {
+      setActiveTab("Orders");
     } else {
-      setActiveTab('');
+      setActiveTab("");
     }
   }, [pathname]);
 
@@ -66,10 +68,18 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const handleSignout = async () => {
     try {
       await signout(null).unwrap();
-      router.push('/', { scroll: false });
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
+      router.push("/", { scroll: false });
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Singout successfully",
+      });
+    } catch (error: any) {
+      toast({
+        variant: "error",
+        title: "Error",
+        description: error?.data?.message,
+      });
     }
   };
   return (
@@ -86,11 +96,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
                 onClick={() => {
-                  setActiveTab('Admin');
+                  setActiveTab("Admin");
                 }}
                 href="/admin"
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  activeTab === 'Admin' && 'bg-muted text-primary'
+                  activeTab === "Admin" && "bg-muted text-primary"
                 }`}
               >
                 <Home className="h-4 w-4" />
@@ -98,11 +108,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </Link>
               <Link
                 onClick={() => {
-                  setActiveTab('Categories');
+                  setActiveTab("Categories");
                 }}
                 href="/admin/categories"
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  activeTab === 'Categories' && 'bg-muted text-primary'
+                  activeTab === "Categories" && "bg-muted text-primary"
                 }`}
               >
                 <ShoppingCart className="h-4 w-4" />
@@ -110,23 +120,23 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </Link>
               <Link
                 onClick={() => {
-                  setActiveTab('Products');
+                  setActiveTab("Products");
                 }}
                 href="/admin/products"
                 className={`flex items-center gap-3 text-muted-foreground rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                  activeTab === 'Products' && 'bg-muted text-primary'
+                  activeTab === "Products" && "bg-muted text-primary"
                 }`}
               >
                 <Package className="h-4 w-4" />
-                Products{' '}
+                Products{" "}
               </Link>
               <Link
                 onClick={() => {
-                  setActiveTab('Customers');
+                  setActiveTab("Customers");
                 }}
                 href="/admin/customers"
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  activeTab === 'Customers' && 'bg-muted text-primary'
+                  activeTab === "Customers" && "bg-muted text-primary"
                 }`}
               >
                 <Users className="h-4 w-4" />
@@ -134,11 +144,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </Link>
               <Link
                 onClick={() => {
-                  setActiveTab('Orders');
+                  setActiveTab("Orders");
                 }}
                 href="/admin/orders"
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  activeTab === 'Orders' && 'bg-muted text-primary'
+                  activeTab === "Orders" && "bg-muted text-primary"
                 }`}
               >
                 <ListOrdered className="h-4 w-4" />
@@ -146,11 +156,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </Link>
               <Link
                 onClick={() => {
-                  setActiveTab('Product Reviews');
+                  setActiveTab("Product Reviews");
                 }}
                 href="/admin/productReviews"
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  activeTab === 'Product Reviews' && 'bg-muted text-primary'
+                  activeTab === "Product Reviews" && "bg-muted text-primary"
                 }`}
               >
                 <LineChart className="h-4 w-4" />
@@ -158,11 +168,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </Link>
               <Link
                 onClick={() => {
-                  setActiveTab('Blogs');
+                  setActiveTab("Blogs");
                 }}
                 href="/admin/blogs"
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                  activeTab === 'Blogs' && 'bg-muted text-primary'
+                  activeTab === "Blogs" && "bg-muted text-primary"
                 }`}
               >
                 <LibraryBig className="h-4 w-4" />
@@ -196,11 +206,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setActiveTab('Admin');
+                    setActiveTab("Admin");
                   }}
                   href="/admin"
                   className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
-                    activeTab === 'Admin' && 'bg-muted'
+                    activeTab === "Admin" && "bg-muted"
                   }`}
                 >
                   <Home className="h-5 w-5" />
@@ -208,11 +218,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setActiveTab('Categories');
+                    setActiveTab("Categories");
                   }}
                   href="/admin/categories"
                   className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
-                    activeTab === 'Categories' && 'bg-muted'
+                    activeTab === "Categories" && "bg-muted"
                   }`}
                 >
                   <ShoppingCart className="h-5 w-5" />
@@ -220,11 +230,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setActiveTab('Products');
+                    setActiveTab("Products");
                   }}
                   href="/admin/products"
                   className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
-                    activeTab === 'Products' && 'bg-muted'
+                    activeTab === "Products" && "bg-muted"
                   }`}
                 >
                   <Package className="h-5 w-5" />
@@ -232,11 +242,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setActiveTab('Customers');
+                    setActiveTab("Customers");
                   }}
                   href="/admin/customers"
                   className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
-                    activeTab === 'Customers' && 'bg-muted'
+                    activeTab === "Customers" && "bg-muted"
                   }`}
                 >
                   <Users className="h-5 w-5" />
@@ -244,11 +254,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setActiveTab('Orders');
+                    setActiveTab("Orders");
                   }}
                   href="/admin/orders"
                   className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
-                    activeTab === 'Orders' && 'bg-muted'
+                    activeTab === "Orders" && "bg-muted"
                   }`}
                 >
                   <ListOrdered className="h-4 w-4" />
@@ -256,11 +266,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setActiveTab('Product Reviews');
+                    setActiveTab("Product Reviews");
                   }}
                   href="/admin/productReviews"
                   className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
-                    activeTab === 'Blog Reviews' && 'bg-muted'
+                    activeTab === "Blog Reviews" && "bg-muted"
                   }`}
                 >
                   <LineChart className="h-5 w-5" />
@@ -268,11 +278,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setActiveTab('Blogs');
+                    setActiveTab("Blogs");
                   }}
                   href="/admin/blogs"
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                    activeTab === 'Blogs' && 'bg-muted text-primary'
+                    activeTab === "Blogs" && "bg-muted text-primary"
                   }`}
                 >
                   <LibraryBig className="h-4 w-4" />

@@ -45,7 +45,7 @@ const Customers = () => {
   }));
   return (
     <main className="h-full">
-      <h1 className="text-xl font-semibold">Customers</h1>
+      <h1 className="text-xl font-semibold py-4">Customers</h1>
       {isLoading ? (
         <div className="h-full flex justify-center">
           <Spinner size={"medium"} />

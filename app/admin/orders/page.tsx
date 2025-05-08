@@ -1,7 +1,7 @@
-'use client';
-import React, { useState } from 'react';
-import ItemCard from '@/app/customComponents/ItemCard';
-import { Button } from '@/components/ui/button';
+"use client";
+import React, { useState } from "react";
+import ItemCard from "@/app/customComponents/ItemCard";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import {
   Pagination,
   PaginationContent,
@@ -18,8 +18,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
-import Spinner from '@/components/ui/spinner';
+} from "@/components/ui/pagination";
+import Spinner from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -27,15 +27,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { useToast } from '@/hooks/use-toast';
+} from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
 import {
   useGetAllOrdersQuery,
   useUpdateOrderMutation,
-} from '@/redux/api/orderApi';
-import { DialogTitle } from '@radix-ui/react-dialog';
-import { Controller, useForm } from 'react-hook-form';
-import Select from 'react-select';
+} from "@/redux/api/orderApi";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { Controller, useForm } from "react-hook-form";
+import Select from "react-select";
 
 const Orders = () => {
   const [page, setPage] = useState(1);
@@ -59,10 +59,10 @@ const Orders = () => {
     reset,
   } = useForm();
   const statuses = [
-    { label: 'Pending', value: 'pending' },
-    { label: 'Processed', value: 'processed' },
-    { label: 'Picked', value: 'picked' },
-    { label: 'Complete', value: 'complete' },
+    { label: "Pending", value: "pending" },
+    { label: "Processed", value: "processed" },
+    { label: "Picked", value: "picked" },
+    { label: "Complete", value: "complete" },
   ];
   const orders = allOrders.map((order: any) => ({
     id: order?.id,
@@ -85,24 +85,28 @@ const Orders = () => {
       }).unwrap();
       if (updatedOrder.success) {
         toast({
-          variant: 'success',
-          title: 'Success',
-          description: 'Order updated successfully',
+          variant: "success",
+          title: "Success",
+          description: "Order updated successfully",
         });
       }
     } catch (error: any) {
       toast({
-        variant: 'error',
-        title: 'Error',
+        variant: "error",
+        title: "Error",
         description: error?.data?.message,
       });
     }
   };
   return (
     <main className="h-full">
-      {isLoading ? (
+      {allOrders.length < 1 ? (
+        <section className="flex justify-center items-center h-full">
+          <p className="text-2xl">Orders not available</p>
+        </section>
+      ) : isLoading ? (
         <div className="h-full flex justify-center">
-          <Spinner size={'medium'} />
+          <Spinner size={"medium"} />
         </div>
       ) : (
         <section className="flex flex-col justify-between h-full">
@@ -165,35 +169,35 @@ const Orders = () => {
                                               }`,
                                               value: `${order?.order_status}`,
                                             }
-                                          : ''
+                                          : ""
                                       }
-                                      rules={{ required: 'Status is required' }}
+                                      rules={{ required: "Status is required" }}
                                       render={({ field }) => (
                                         <Select
                                           id="order_status"
                                           styles={{
                                             placeholder: (base) => ({
                                               ...base,
-                                              color: '#ccc',
-                                              fontSize: '14px',
+                                              color: "#ccc",
+                                              fontSize: "14px",
                                             }),
                                             control: (base, state) => ({
                                               ...base,
                                               border: state.isFocused
-                                                ? '1px solid #ccc'
-                                                : '1px solid #ccc',
+                                                ? "1px solid #ccc"
+                                                : "1px solid #ccc",
                                               boxShadow: state.isFocused
-                                                ? '0 0 0 1px #ccc'
-                                                : '0',
-                                              '&:hover': {
+                                                ? "0 0 0 1px #ccc"
+                                                : "0",
+                                              "&:hover": {
                                                 border: state.isFocused
-                                                  ? '1px solid #ccc'
-                                                  : '1px solid #ccc',
+                                                  ? "1px solid #ccc"
+                                                  : "1px solid #ccc",
                                               },
-                                              fontSize: '15px',
-                                              height: '43px',
-                                              fontWeight: '500',
-                                              borderRadius: '6px',
+                                              fontSize: "15px",
+                                              height: "43px",
+                                              fontWeight: "500",
+                                              borderRadius: "6px",
                                             }),
                                             option: (
                                               base,
@@ -201,20 +205,20 @@ const Orders = () => {
                                             ) => ({
                                               ...base,
                                               backgroundColor: isSelected
-                                                ? 'rgb(0,150,149)'
+                                                ? "rgb(0,150,149)"
                                                 : isFocused
-                                                ? ' rgb(209 250 229)'
-                                                : 'transparent',
-                                              cursor: 'pointer',
+                                                ? " rgb(209 250 229)"
+                                                : "transparent",
+                                              cursor: "pointer",
                                             }),
                                             menu: (base) => ({
                                               ...base,
-                                              fontSize: '15px',
-                                              fontWeight: '500',
+                                              fontSize: "15px",
+                                              fontWeight: "500",
                                             }),
                                             indicatorSeparator: (base) => ({
                                               ...base,
-                                              display: 'none',
+                                              display: "none",
                                             }),
                                           }}
                                           {...field}
@@ -277,7 +281,7 @@ const Orders = () => {
                   <PaginationItem key={index}>
                     <PaginationLink
                       className={`cursor-pointer ${
-                        page === index + 1 ? `is-active` : ''
+                        page === index + 1 ? `is-active` : ""
                       }`}
                       isActive={page === index + 1}
                     >

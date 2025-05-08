@@ -46,8 +46,12 @@ const ProductsReview = () => {
   const router = useRouter();
   return (
     <main className="h-full">
-      <h1 className="text-xl font-semibold">Product Reviews</h1>
-      {isLoading ? (
+      <h1 className="text-xl font-semibold py-4">Product Reviews</h1>
+      {productReviewData.length < 1 ? (
+        <section className="flex justify-center items-center h-full">
+          <p className="text-2xl">Product reviews not available</p>
+        </section>
+      ) : isLoading ? (
         <div className="h-full flex justify-center">
           <Spinner size={"medium"} />
         </div>

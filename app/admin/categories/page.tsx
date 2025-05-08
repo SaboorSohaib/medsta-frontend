@@ -50,7 +50,11 @@ const Categories = () => {
         <h1 className="text-xl font-semibold">Categories</h1>
         <CreateOrUpdateCategory isEdit={false} categoryData={categoriesData} />
       </div>
-      {isLoading ? (
+      {categoriesData.length < 1 ? (
+        <section className="flex justify-center items-center h-full">
+          <p className="text-2xl">Categories not available</p>
+        </section>
+      ) : isLoading ? (
         <div className="flex justify-center h-full">
           <Spinner size={"medium"} />
         </div>
@@ -63,7 +67,6 @@ const Categories = () => {
                   <TableHead>Id</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Handle</TableHead>
-                  <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -92,9 +95,6 @@ const Categories = () => {
                       {category?.category_name}
                     </TableCell>
                     <TableCell>{category?.category_handle}</TableCell>
-                    <TableCell>
-                      <Button type="button">Delete</Button>
-                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
