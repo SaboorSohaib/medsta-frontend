@@ -19,12 +19,15 @@ import {
   useUpdateProductMutation,
 } from "@/redux/api/productApi";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ImageUploadComponent from "@/components/ui/ImageUploadComponent";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
+import { FaToggleOff, FaToggleOn } from "react-icons/fa6";
+import { log } from "console";
 
 const CreateOrUpdateProducts = ({
   isEdit,
@@ -35,8 +38,7 @@ const CreateOrUpdateProducts = ({
 }) => {
   // Define Zod schema for form validation
   const productSchema = z.object({
-    product_price: z.number().positive().min(1, "Price is required"),
-    // product_price: z.string().min(1, "Product price is required"),
+    product_price: z.string().min(1, "Product price is required"),
     product_title: z
       .string()
       .min(1, "Product title is required")
@@ -44,23 +46,20 @@ const CreateOrUpdateProducts = ({
     product_description: z
       .string()
       .min(1, "Product description is required")
-      .max(20, "Product description cannot exceed 20 characters"),
+      .max(50, "Product description cannot exceed 50 characters"),
     product_type: z
       .string()
       .min(1, "Product type is required")
       .max(20, "Product type cannot exceed 20 characters"),
-    product_photo: z.string().nonempty("Product photo is required"),
+    // product_photo: z.string().nonempty("Product photo is required"),
     product_handle: z
       .string()
       .min(1, "Product handle is required")
       .max(20, "Product handle cannot exceed 20 characters"),
-    product_status: z.boolean(),
-    life: z.string().min(1, "Product life is required"),
-    manufacturing: z
-      .string()
-      .min(1, "Product manufacturing is required")
-      .max(20, "Product manufacturing cannot exceed 20 characters"),
-    category_id: z.number().positive(),
+    category_id: z.object(
+      { label: z.string(), value: z.string() },
+      { message: "Category is required" }
+    ),
   });
   const {
     register,
@@ -69,6 +68,7 @@ const CreateOrUpdateProducts = ({
     setValue,
     control,
     reset,
+    watch,
   } = useForm({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -79,12 +79,12 @@ const CreateOrUpdateProducts = ({
       product_photo: isEdit ? productData?.product_photo : "",
       product_handle: isEdit ? productData?.product_handle : "",
       product_status: isEdit ? productData?.product_status : "",
-      life: isEdit ? productData?.life : "",
-      manufacturing: isEdit ? productData?.manufacturing : "",
-      category_id: isEdit ? productData?.category_id : "",
+      category_id: isEdit ? productData?.category?.id : "",
     },
   });
-  const router = useRouter();
+
+  const productStatus =
+    watch("product_status") ?? (isEdit ? productData?.product_status : false);
   const { toast } = useToast();
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
@@ -95,12 +95,10 @@ const CreateOrUpdateProducts = ({
       product_title: data.product_title,
       product_description: data.product_description,
       product_type: data.product_type,
-      product_photo: data.product_photo,
+      product_photo: "https://ik.imagekit.io/gbfjo9pxy/customer_4nma_rYDU.jpg",
       product_handle: data.product_handle,
-      product_status: data.product_status ? true : false,
-      life: data.life,
-      manufacturing: data.manufacturing,
-      category_id: data.category_id.value,
+      product_status: productStatus,
+      category_id: data?.category_id?.value,
     };
     try {
       if (!isEdit) {
@@ -139,7 +137,7 @@ const CreateOrUpdateProducts = ({
 
   const categories =
     data?.data?.map((category: any) => {
-      return { label: category.category_name, value: category?.id };
+      return { label: category?.category_name, value: category?.id };
     }) || [];
 
   const handleUploadSuccess = (url: string) => {
@@ -162,7 +160,7 @@ const CreateOrUpdateProducts = ({
             isEdit ? "Update Product" : "Create Product"
           }`}</DialogTitle>
           <DialogDescription>
-            Make changes to your product here. Click save when you're done.
+            Make changes to your product here. Click create when you're done.
           </DialogDescription>
         </DialogHeader>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -256,81 +254,48 @@ const CreateOrUpdateProducts = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-y-2 md:flex-row md:gap-x-2">
-              <div className="flex flex-col items-start gap-y-2 w-full">
-                <Label htmlFor="product description" className="text-right">
-                  Product Descriotion
-                </Label>
-                <Input
-                  id="product description"
-                  className={`focus-visible:ring-offset-0 focus-visible:ring-0 ${
-                    errors.product_description && "border border-red-500"
-                  }`}
-                  defaultValue={isEdit ? productData?.product_description : ""}
-                  {...register("product_description")}
-                />
-                {errors?.product_description?.message && (
-                  <p className=" text-red-700 mt-1">
-                    {errors.product_description.message as any}
-                  </p>
+            <div className="flex flex-col items-start gap-y-2 w-full">
+              <Label htmlFor="product status" className="text-right">
+                Product Status
+              </Label>
+              <Controller
+                name="product_status"
+                control={control}
+                defaultValue={isEdit ? productData?.product_status : false}
+                render={({ field: { ref, name, value } }) => (
+                  <div
+                    id="product_status"
+                    className="cursor-pointer flex items-center"
+                    onClick={() => setValue("product_status", !value)}
+                  >
+                    <Input type="hidden" value={value} ref={ref} name={name} />
+                    {value ? (
+                      <FaToggleOn size={25} className="text-green-500" />
+                    ) : (
+                      <FaToggleOff size={25} className="text-gray-400" />
+                    )}
+                    <span className="ml-2">{value ? "Disable" : "Enable"}</span>
+                  </div>
                 )}
-              </div>
-              <div className="flex flex-col items-start gap-y-2 w-full">
-                <Label htmlFor="product status" className="text-right">
-                  Product Status
-                </Label>
-                <Input
-                  id="product status"
-                  className={`focus-visible:ring-offset-0 focus-visible:ring-0 ${
-                    errors.product_status && "border border-red-500"
-                  }`}
-                  defaultValue={isEdit ? productData?.product_status : ""}
-                  {...register("product_status")}
-                />
-                {errors?.product_status?.message && (
-                  <p className=" text-red-700 mt-1">
-                    {errors.product_status.message as any}
-                  </p>
-                )}
-              </div>
+              />
             </div>
-            <div className="flex flex-col gap-y-2 md:flex-row md:gap-x-2">
-              <div className="flex flex-col items-start gap-y-2 w-full">
-                <Label htmlFor="product life" className="text-right">
-                  Product Life
-                </Label>
-                <Input
-                  id="product life"
-                  className={`focus-visible:ring-offset-0 focus-visible:ring-0 ${
-                    errors.life && "border border-red-500"
-                  }`}
-                  defaultValue={isEdit ? productData?.life : ""}
-                  {...register("life")}
-                />
-                {errors?.life?.message && (
-                  <p className=" text-red-700 mt-1">
-                    {errors.life.message as any}
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-col items-start gap-y-2 w-full">
-                <Label htmlFor="manufacturing" className="text-right">
-                  Manufacturing
-                </Label>
-                <Input
-                  id="manufacturing"
-                  className={`focus-visible:ring-offset-0 focus-visible:ring-0 ${
-                    errors.manufacturing && "border border-red-500"
-                  }`}
-                  defaultValue={isEdit ? productData?.manufacturing : ""}
-                  {...register("manufacturing")}
-                />
-                {errors?.manufacturing?.message && (
-                  <p className=" text-red-700 mt-1">
-                    {errors.manufacturing.message as any}
-                  </p>
-                )}
-              </div>
+            <div className="flex flex-col items-start gap-y-2 w-full">
+              <Label htmlFor="product description" className="text-right">
+                Product Description
+              </Label>
+              <Textarea
+                id="product description"
+                className={`focus-visible:ring-offset-0 focus-visible:ring-0 ${
+                  errors.product_description && "border border-red-500"
+                }`}
+                defaultValue={isEdit ? productData?.product_description : ""}
+                {...register("product_description")}
+              />
+              {errors?.product_description?.message && (
+                <p className=" text-red-700 mt-1">
+                  {errors.product_description.message as any}
+                </p>
+              )}
             </div>
             <div className="flex flex-col gap-y-2 md:flex-row md:items-center md:gap-x-2">
               <div className="flex flex-col items-start gap-y-[6px] w-full">
@@ -344,8 +309,8 @@ const CreateOrUpdateProducts = ({
                     defaultValue={
                       isEdit && productData?.category_id
                         ? {
-                            label: `${productData?.category_id?.category_name}`,
-                            value: `${productData?.category_id?.id}`,
+                            label: `${productData?.category?.category_name}`,
+                            value: `${productData?.category?.id}`,
                           }
                         : ""
                     }
@@ -405,6 +370,11 @@ const CreateOrUpdateProducts = ({
                       />
                     )}
                   />
+                  {errors?.category_id?.message && (
+                    <p className=" text-red-700 mt-1">
+                      {errors.category_id.message as any}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

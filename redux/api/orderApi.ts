@@ -1,29 +1,29 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const orderApi = createApi({
-  reducerPath: 'orderApi',
+  reducerPath: "orderApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/order',
-    credentials: 'include',
+    baseUrl: "http://localhost:9000/order",
+    credentials: "include",
   }),
-  tagTypes: ['GetAllOrders'],
+  tagTypes: ["GetAllOrders"],
 
   endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: ({ ...orderData }) => {
         return {
-          url: '/create-order',
-          method: 'POST',
+          url: "/create-order",
+          method: "POST",
           body: { ...orderData },
         };
       },
     }),
     getAllOrders: builder.query<any, { size: number; page: number }>({
       query: ({ size, page }) =>
-        `get-all-orders${size ? `?size=${size}` : ''}${
-          page ? `&page=${page}` : ''
+        `get-all-orders${size ? `?size=${size}` : ""}${
+          page ? `&page=${page}` : ""
         }`,
-      providesTags: ['GetAllOrders'],
+      providesTags: ["GetAllOrders"],
     }),
     getOrderCountByEmail: builder.query<any, { email: string }>({
       query: (email) => `/getOrderByCountEmail/${email}`,
@@ -33,19 +33,22 @@ export const orderApi = createApi({
       { email: string; size: number; page: number }
     >({
       query: ({ email, size, page }) =>
-        `/getOrderByEmail/${email}${size ? `?size=${size}` : ''}${
-          page ? `&page=${page}` : ''
+        `/getOrderByEmail/${email}${size ? `?size=${size}` : ""}${
+          page ? `&page=${page}` : ""
         }`,
+    }),
+    getOrderCalculation: builder.query({
+      query: () => "/getOrderCalculation",
     }),
     updateOrder: builder.mutation({
       query: ({ id, ...orderData }) => {
         return {
           url: `/${id}`,
-          method: 'PUT',
+          method: "PUT",
           body: { ...orderData },
         };
       },
-      invalidatesTags: ['GetAllOrders'],
+      invalidatesTags: ["GetAllOrders"],
     }),
   }),
 });
@@ -55,5 +58,6 @@ export const {
   useGetOrderCountByEmailQuery,
   useGetOrdersByEmailQuery,
   useGetAllOrdersQuery,
+  useGetOrderCalculationQuery,
   useUpdateOrderMutation,
 } = orderApi;

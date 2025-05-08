@@ -1,8 +1,13 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
+import Dashboard from "../customComponents/Dashboard";
 
 const page = () => {
-  return <h1>Admin Dashboard</h1>;
+  return (
+    <main>
+      <Dashboard />
+    </main>
+  );
 };
 
 export default page;

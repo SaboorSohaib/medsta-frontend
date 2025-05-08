@@ -53,7 +53,11 @@ const Products = () => {
         <h1 className="text-xl font-semibold">Prodcuts</h1>
         <CreateOrUpdateProducts isEdit={false} />
       </div>
-      {isLoading ? (
+      {productsData.length < 1 ? (
+        <section className="flex justify-center items-center h-full">
+          <p className="text-2xl">Products not available</p>
+        </section>
+      ) : isLoading ? (
         <div className="h-full flex justify-center">
           <Spinner size={"medium"} />
         </div>
@@ -67,8 +71,6 @@ const Products = () => {
                   <TableHead>Title</TableHead>
                   <TableHead>Price</TableHead>
                   <TableHead>Product Type</TableHead>
-                  <TableHead>Manufacturing</TableHead>
-                  {/* <TableHead>status</TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -97,8 +99,6 @@ const Products = () => {
                     </TableCell>
                     <TableCell>${product?.product_price}</TableCell>
                     <TableCell>{product?.product_type}</TableCell>
-                    <TableCell>{product?.manufacturing}</TableCell>
-                    {/* <TableCell>{product?.product_status}</TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

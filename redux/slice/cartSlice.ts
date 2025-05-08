@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useToast } from "@/hooks/use-toast";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: any = { cartItems: [] };
-
 export const cart = createSlice({
   name: "cart",
   initialState,
@@ -42,8 +42,6 @@ export const cart = createSlice({
       state.cartItems.splice(index, 1);
     },
     clearCart: (state) => {
-      console.log("clear cart");
-
       state.cartItems = [];
     },
   },

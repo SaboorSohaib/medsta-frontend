@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type Product = {
   success: boolean;
@@ -12,28 +12,29 @@ type ListProducts<T> = {
   data?: T[];
 };
 export const productApi = createApi({
-  reducerPath: 'productApi',
+  reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/product',
-    credentials: 'include',
+    baseUrl: "http://localhost:9000/product",
+    credentials: "include",
   }),
-  tagTypes: ['Products'],
+  tagTypes: ["Products", "singleProduct"],
   endpoints: (builder) => ({
     getProducts: builder.query<
       ListProducts<Product>,
       { size?: number; page?: number }
     >({
       query: ({ size, page }) =>
-        `/get-all-products${size ? `?size=${size}` : ''}${
-          page ? `&page=${page}` : ''
+        `/get-all-products${size ? `?size=${size}` : ""}${
+          page ? `&page=${page}` : ""
         }`,
-      providesTags: ['Products'],
+      providesTags: ["Products"],
     }),
     searchProduct: builder.query({
       query: (query: string) => `/search?query=${query}`,
     }),
     getSingleProduct: builder.query({
       query: (id) => `/${id}`,
+      providesTags: ["singleProduct"],
     }),
     createProduct: builder.mutation({
       query: ({
@@ -52,8 +53,8 @@ export const productApi = createApi({
         category_id,
       }) => {
         return {
-          url: '/create-product',
-          method: 'POST',
+          url: "/create-product",
+          method: "POST",
           body: {
             product_title,
             product_price,
@@ -71,18 +72,19 @@ export const productApi = createApi({
           },
         };
       },
-      invalidatesTags: ['Products'],
+      invalidatesTags: ["Products"],
     }),
     UpdateProduct: builder.mutation({
       query: ({ id, ...productData }) => {
         return {
           url: `/${id}`,
-          method: 'PUT',
+          method: "PUT",
           body: {
             ...productData,
           },
         };
       },
+      invalidatesTags: ["singleProduct"],
     }),
   }),
 });

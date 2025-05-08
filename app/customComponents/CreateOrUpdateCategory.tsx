@@ -120,7 +120,7 @@ const CreateOrUpdateCategory = ({
             {isEdit ? "Update Category" : "Create Category"}
           </DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click create when you're done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>

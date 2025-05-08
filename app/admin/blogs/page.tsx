@@ -27,6 +27,7 @@ const Blogs = () => {
   const [page, setPage] = useState(1);
   const size = 10;
   const { data, isLoading } = useGetBlogsQuery({ size: size, page: page });
+  const blogsData = data?.data || [];
   const totalItems = data?.totalItems || 0;
   const totalPages = Math.ceil(totalItems / size);
   const startItem = (page - 1) * size + 1;
@@ -47,7 +48,11 @@ const Blogs = () => {
         <h1 className="text-xl font-semibold">Blogs</h1>
         <CreateOrUpdateBlog isEdit={false} />
       </div>
-      {isLoading ? (
+      {blogsData?.length < 1 ? (
+        <section className="flex justify-center items-center h-full">
+          <p className="text-2xl">Blogs not available</p>
+        </section>
+      ) : isLoading ? (
         <div className="h-full flex justify-center">
           <Spinner size={"medium"} />
         </div>
@@ -65,7 +70,7 @@ const Blogs = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data?.data?.map((blog: any, idx: number) => (
+                {blogsData?.map((blog: any, idx: number) => (
                   <TableRow key={idx} className="cursor-pointer">
                     <TableCell>{blog?.id}</TableCell>
                     <TableCell>{blog?.blog_title}</TableCell>
