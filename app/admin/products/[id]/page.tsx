@@ -44,10 +44,6 @@ const SingleProduct = () => {
                 <p>{data?.data?.category?.category_name}</p>
               </div>
               <div className="flex items-center gap-x-1">
-                <p className="text-lg font-bold">Manufacturing:</p>
-                <p>{data?.data?.manufacturing}</p>
-              </div>
-              <div className="flex items-center gap-x-1">
                 <p className="text-lg font-bold">Handle:</p>
                 <p>{data?.data?.product_handle}</p>
               </div>

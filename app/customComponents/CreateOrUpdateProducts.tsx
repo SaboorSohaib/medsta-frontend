@@ -51,7 +51,7 @@ const CreateOrUpdateProducts = ({
       .string()
       .min(1, "Product type is required")
       .max(20, "Product type cannot exceed 20 characters"),
-    // product_photo: z.string().nonempty("Product photo is required"),
+    product_photo: z.string().nonempty("Product photo is required"),
     product_handle: z
       .string()
       .min(1, "Product handle is required")
@@ -95,7 +95,7 @@ const CreateOrUpdateProducts = ({
       product_title: data.product_title,
       product_description: data.product_description,
       product_type: data.product_type,
-      product_photo: "https://ik.imagekit.io/gbfjo9pxy/customer_4nma_rYDU.jpg",
+      product_photo: data.product_photo,
       product_handle: data.product_handle,
       product_status: productStatus,
       category_id: data?.category_id?.value,
