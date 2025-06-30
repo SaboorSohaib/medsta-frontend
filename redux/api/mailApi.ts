@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const mailApi = createApi({
   reducerPath: "mailApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9000/mail",
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/mail`,
     credentials: "include",
   }),
   endpoints: (builder) => ({

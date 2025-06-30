@@ -1,10 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const authApi = createApi({
-  reducerPath: 'authApi',
+  reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/auth',
-    credentials: 'include',
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth`,
+    credentials: "include",
   }),
 
   endpoints: (builder) => ({
@@ -18,8 +18,8 @@ export const authApi = createApi({
         phone_number,
       }) => {
         return {
-          url: '/signup',
-          method: 'POST',
+          url: "/signup",
+          method: "POST",
           body: {
             first_name,
             last_name,
@@ -34,8 +34,8 @@ export const authApi = createApi({
     signin: builder.mutation({
       query: ({ email, password }) => {
         return {
-          url: '/signin',
-          method: 'POST',
+          url: "/signin",
+          method: "POST",
           body: { email, password },
         };
       },
@@ -43,8 +43,8 @@ export const authApi = createApi({
     signout: builder.mutation({
       query: () => {
         return {
-          url: '/signout',
-          method: 'DELETE',
+          url: "/signout",
+          method: "DELETE",
         };
       },
     }),

@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type Category = {
   success: boolean;
@@ -12,26 +12,26 @@ type ListCategory<T> = {
   data?: T[];
 };
 export const categoryApi = createApi({
-  reducerPath: 'categoryApi',
+  reducerPath: "categoryApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/category',
-    credentials: 'include',
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+    credentials: "include",
   }),
-  tagTypes: ['categories', 'singleCategory'],
+  tagTypes: ["categories", "singleCategory"],
   endpoints: (builder) => ({
     getCategories: builder.query<
       ListCategory<Category>,
       { size?: number; page?: number }
     >({
       query: ({ size, page }) =>
-        `/get-all-categories${size ? `?size=${size}` : ''}${
-          page ? `&page=${page}` : ''
+        `/get-all-categories${size ? `?size=${size}` : ""}${
+          page ? `&page=${page}` : ""
         }`,
-      providesTags: ['categories'],
+      providesTags: ["categories"],
     }),
     getSingleCategory: builder.query({
       query: (id: string) => `/${id}`,
-      providesTags: ['singleCategory'],
+      providesTags: ["singleCategory"],
     }),
     getTopCategory: builder.query({
       query: () => `/get-top-categories`,
@@ -39,8 +39,8 @@ export const categoryApi = createApi({
     createCategory: builder.mutation({
       query: ({ category_name, category_handle, category_photo }) => {
         return {
-          url: '/create-category',
-          method: 'POST',
+          url: "/create-category",
+          method: "POST",
           body: {
             category_name,
             category_handle,
@@ -48,17 +48,17 @@ export const categoryApi = createApi({
           },
         };
       },
-      invalidatesTags: ['categories'],
+      invalidatesTags: ["categories"],
     }),
     updateCategory: builder.mutation({
       query: ({ id, ...categorData }) => {
         return {
           url: `/${id}`,
-          method: 'PUT',
+          method: "PUT",
           body: { ...categorData },
         };
       },
-      invalidatesTags: ['singleCategory'],
+      invalidatesTags: ["singleCategory"],
     }),
   }),
 });

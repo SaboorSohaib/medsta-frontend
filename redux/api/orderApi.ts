@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const orderApi = createApi({
   reducerPath: "orderApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9000/order",
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/order`,
     credentials: "include",
   }),
   tagTypes: ["GetAllOrders"],

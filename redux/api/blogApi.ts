@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type Blog = {
   success: boolean;
@@ -12,47 +12,47 @@ type ListBlog<T> = {
 };
 
 export const blogApi = createApi({
-  reducerPath: 'blog',
+  reducerPath: "blog",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/blog',
-    credentials: 'include',
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog`,
+    credentials: "include",
   }),
-  tagTypes: ['Blogs', 'Single blog'],
+  tagTypes: ["Blogs", "Single blog"],
   endpoints: (builder) => ({
     getBlogs: builder.query<ListBlog<Blog>, { size?: number; page?: number }>({
       query: ({ size, page }) =>
-        `/get-all-blogs${size ? `?size=${size}` : ''}${
-          page ? `&page=${page}` : ''
+        `/get-all-blogs${size ? `?size=${size}` : ""}${
+          page ? `&page=${page}` : ""
         }`,
-      providesTags: ['Blogs'],
+      providesTags: ["Blogs"],
     }),
     getSingleBlog: builder.query({
       query: (id) => `/${id}`,
-      providesTags: ['Single blog'],
+      providesTags: ["Single blog"],
     }),
     createBlog: builder.mutation({
       query: ({ id, ...blogData }) => {
         return {
           url: `/create-blog`,
-          method: 'POST',
+          method: "POST",
           body: {
             ...blogData,
           },
         };
       },
-      invalidatesTags: ['Blogs'],
+      invalidatesTags: ["Blogs"],
     }),
     updateBlog: builder.mutation({
       query: ({ id, ...blogData }) => {
         return {
           url: `/${id}`,
-          method: 'PUT',
+          method: "PUT",
           body: {
             ...blogData,
           },
         };
       },
-      invalidatesTags: ['Single blog'],
+      invalidatesTags: ["Single blog"],
     }),
   }),
 });

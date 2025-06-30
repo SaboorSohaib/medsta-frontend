@@ -14,7 +14,7 @@ type ListProducts<T> = {
 export const productApi = createApi({
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9000/product",
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/product`,
     credentials: "include",
   }),
   tagTypes: ["Products", "singleProduct"],

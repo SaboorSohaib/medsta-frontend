@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const addressApi = createApi({
   reducerPath: "addressApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9000/address",
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/address`,
     credentials: "include",
   }),
   tagTypes: ["Single Address"],

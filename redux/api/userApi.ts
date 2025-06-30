@@ -16,7 +16,7 @@ export const userApi = createApi({
   reducerPath: "userApi",
   refetchOnFocus: true,
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9000/user",
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
     credentials: "include",
   }),
   endpoints: (builder) => ({

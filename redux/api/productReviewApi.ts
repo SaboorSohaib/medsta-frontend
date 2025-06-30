@@ -15,7 +15,7 @@ type ListProductReviews<T> = {
 export const productReviewApi = createApi({
   reducerPath: "productReviewApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9000/product-review",
+    baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/product-review`,
     credentials: "include",
   }),
   tagTypes: [
