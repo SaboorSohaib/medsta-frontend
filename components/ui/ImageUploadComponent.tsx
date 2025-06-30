@@ -49,7 +49,7 @@ const ImageUploadComponent = ({
     }
   };
 
-  const ikUploadRef = useRef(null);
+  const ikUploadRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <ImageKitProvider
@@ -80,7 +80,7 @@ const ImageUploadComponent = ({
           className={`w-full ${
             isLoading && "bg-white border border-black w-[130px]"
           }`}
-          onClick={() => ikUploadRef.current.click()}
+          onClick={() => ikUploadRef.current!.click()}
           disabled={isLoading ? true : false}
         >
           {" "}
