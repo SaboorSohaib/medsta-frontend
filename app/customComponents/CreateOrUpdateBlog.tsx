@@ -41,14 +41,14 @@ const CreateOrUpdateBlog = ({
     blog_title: z
       .string()
       .min(1, "Blog title is required")
-      .max(20, "Blog title cannot exceed 20 characters"),
+      .max(20, "Blog title ca nnot exceed 20 characters"),
     blog_description: z.string().min(1, "Blog description is required"),
     blog_author: z.string().min(1, "Blog author is required"),
     category_id: z.object(
       { label: z.string(), value: z.string() },
       { message: "Category is required" }
     ),
-    // blog_photo: z.string().nonempty("Blog photo is required"),
+    blog_photo: z.string().nonempty("Blog photo is required"),
   });
 
   const {
@@ -86,7 +86,7 @@ const CreateOrUpdateBlog = ({
       blog_title: data.blog_title,
       blog_description: data.blog_description,
       blog_author: data.blog_author,
-      blog_photo: "https://ik.imagekit.io/gbfjo9pxy/customer_4nma_rYDU.jpg",
+      blog_photo: data?.blog_photo,
       category_id: data?.category_id?.value,
       user_id: userId,
     };
@@ -147,7 +147,8 @@ const CreateOrUpdateBlog = ({
             isEdit ? "Update Blog" : "Create Blog"
           }`}</DialogTitle>
           <DialogDescription>
-            Make changes to your blog here. Click create when you're done.
+            Make changes to your blog here. Click{" "}
+            {`${isEdit ? "update" : "create"}`} when you're done.
           </DialogDescription>
         </DialogHeader>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>

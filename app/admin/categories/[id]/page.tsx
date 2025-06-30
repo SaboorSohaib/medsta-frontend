@@ -6,6 +6,7 @@ import { useGetSingleCategoryQuery } from "@/redux/api/categoryApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import ItemCard from "@/app/customComponents/ItemCard";
+import Link from "next/link";
 
 const SingleProduct = () => {
   const param = useParams();
@@ -15,6 +16,9 @@ const SingleProduct = () => {
     <main>
       <section className="flex flex-col gap-y-4 lg:flex-row lg:justify-between items-start">
         <Card className={cn("max-w-max")}>
+          <Link className="px-2 py-4" href={"/admin/categories"}>
+            Back
+          </Link>
           <CardHeader>
             <CardTitle>Category Details</CardTitle>
           </CardHeader>
@@ -35,11 +39,6 @@ const SingleProduct = () => {
             </div>
           </CardContent>
         </Card>
-        {/* <ItemCard
-          ItemId={data?.data?.id}
-          ItemTitle={data?.data?.category_name}
-          ItemHandle={data?.data?.category_handle}
-        /> */}
         <CreateOrUpdateCategory isEdit={true} categoryData={data?.data} />
       </section>
     </main>

@@ -1,9 +1,9 @@
-'use client';
-import React, { ReactElement, useRef, useState } from 'react';
-import { ImageKitProvider, IKUpload } from 'imagekitio-next';
-import { Button } from './button';
-import Spinner from './spinner';
-import Image from 'next/image';
+"use client";
+import React, { ReactElement, useRef, useState } from "react";
+import { ImageKitProvider, IKUpload } from "imagekitio-next";
+import { Button } from "./button";
+import Spinner from "./spinner";
+import Image from "next/image";
 
 const ImageUploadComponent = ({
   onUploadSuccess,
@@ -17,7 +17,7 @@ const ImageUploadComponent = ({
 
   const authenticator = async () => {
     try {
-      const response = await fetch('/api/auth');
+      const response = await fetch("/api/upload-auth");
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -35,7 +35,7 @@ const ImageUploadComponent = ({
   };
   const [isLoading, setIsLoading] = useState<boolean | null>(false);
   const onError = (err: any) => {
-    console.error('Upload Error:', err);
+    console.error("Upload Error:", err);
   };
 
   const onStart = () => {
@@ -57,14 +57,14 @@ const ImageUploadComponent = ({
       urlEndpoint={urlEndpoint}
       authenticator={authenticator}
     >
-      <div className='flex flex-col gap-y-2'>
+      <div className="flex flex-col gap-y-2">
         {image && (
           <Image
             src={image}
             width={150}
             height={150}
-            alt='category image'
-            className='rounded-lg'
+            alt="category image"
+            className="rounded-lg"
           />
         )}
         <IKUpload
@@ -73,18 +73,18 @@ const ImageUploadComponent = ({
           onSuccess={onSuccess}
           onUploadStart={onStart}
           ref={ikUploadRef}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         />
         <Button
-          type='button'
+          type="button"
           className={`w-full ${
-            isLoading && 'bg-white border border-black w-[130px]'
+            isLoading && "bg-white border border-black w-[130px]"
           }`}
           onClick={() => ikUploadRef.current.click()}
           disabled={isLoading ? true : false}
         >
-          {' '}
-          {isLoading ? <Spinner size='medium' /> : 'Upload Image'}
+          {" "}
+          {isLoading ? <Spinner size="medium" /> : "Upload Image"}
         </Button>
       </div>
     </ImageKitProvider>

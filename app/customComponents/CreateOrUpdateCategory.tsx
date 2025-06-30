@@ -36,7 +36,9 @@ const CreateOrUpdateCategory = ({
       .min(1, "Category name is required")
       .max(20, "Category name cannot exceed 20 characters"),
     category_handle: z.string().min(1, "Category handle is required"),
-    category_photo: z.string().nonempty("Category Photo is required"),
+    category_photo: isEdit
+      ? z.string().optional()
+      : z.string().nonempty("Category Photo is required"),
   });
 
   const {
@@ -50,7 +52,7 @@ const CreateOrUpdateCategory = ({
     defaultValues: {
       category_name: isEdit ? categoryData?.category_name : "",
       category_handle: isEdit ? categoryData?.category_handle : "",
-      category_photo: categoryData?.category_photo || "",
+      category_photo: isEdit ? categoryData?.category_photo : "",
     },
   });
   const { toast } = useToast();
@@ -60,7 +62,7 @@ const CreateOrUpdateCategory = ({
     const CategoryData = {
       category_name: data.category_name,
       category_handle: data?.category_handle,
-      category_photo: data?.category_photo,
+      category_photo: data?.category_photo || categoryData?.category_photo,
     };
     try {
       if (!isEdit) {
@@ -120,7 +122,8 @@ const CreateOrUpdateCategory = ({
             {isEdit ? "Update Category" : "Create Category"}
           </DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click create when you're done.
+            Make changes to your profile here. Click{" "}
+            {`${isEdit ? "update" : "create"}`} when you're done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>

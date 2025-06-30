@@ -102,7 +102,7 @@ const Signin = () => {
                 {...register("email")}
               />
               {errors?.email?.message && (
-                <p className=" text-red-700 -mt-1">
+                <p className=" text-red-500 -mt-1">
                   {errors.email.message as any}
                 </p>
               )}

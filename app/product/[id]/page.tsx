@@ -151,16 +151,9 @@ const ProductDetails = () => {
                     </span>
                   </p>
                   <p className="text-lg text-gray-400">
-                    MFG:{" "}
-                    <span className="text-base">
-                      {productData?.manufacturing}
-                    </span>
-                  </p>
-                  <p className="text-lg text-gray-400">Life:</p>
-                  <p className="text-lg text-gray-400">
                     Category:{" "}
                     <span className="text-base">
-                      {productData?.category_id?.category_name}
+                      {productData?.category?.category_name}
                     </span>
                   </p>
                 </div>

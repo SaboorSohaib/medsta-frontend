@@ -51,7 +51,11 @@ const CreateOrUpdateProducts = ({
       .string()
       .min(1, "Product type is required")
       .max(20, "Product type cannot exceed 20 characters"),
-    product_photo: z.string().nonempty("Product photo is required"),
+    product_photo: isEdit
+      ? z.string().optional()
+      : z.string().nonempty("Product photo is required"),
+    life: z.object({ label: z.string(), value: z.string() }).optional(),
+    manufacturing: z.string().optional(),
     product_handle: z
       .string()
       .min(1, "Product handle is required")
@@ -80,6 +84,8 @@ const CreateOrUpdateProducts = ({
       product_handle: isEdit ? productData?.product_handle : "",
       product_status: isEdit ? productData?.product_status : "",
       category_id: isEdit ? productData?.category?.id : "",
+      life: isEdit ? productData?.life : "",
+      manufacturing: isEdit ? productData?.manufacturing : "",
     },
   });
 
@@ -95,10 +101,12 @@ const CreateOrUpdateProducts = ({
       product_title: data.product_title,
       product_description: data.product_description,
       product_type: data.product_type,
-      product_photo: data.product_photo,
+      product_photo: "https://ik.imagekit.io/gbfjo9pxy/customer_4nma_rYDU.jpg",
       product_handle: data.product_handle,
       product_status: productStatus,
       category_id: data?.category_id?.value,
+      manufacturing: data?.manufacturing,
+      life: data?.life?.label,
     };
     try {
       if (!isEdit) {
@@ -140,6 +148,11 @@ const CreateOrUpdateProducts = ({
       return { label: category?.category_name, value: category?.id };
     }) || [];
 
+  const productLife = [
+    { label: "Yes", value: "yes" },
+    { label: "No", value: "no" },
+  ];
+
   const handleUploadSuccess = (url: string) => {
     setValue("product_photo", url, {
       shouldValidate: true,
@@ -160,7 +173,8 @@ const CreateOrUpdateProducts = ({
             isEdit ? "Update Product" : "Create Product"
           }`}</DialogTitle>
           <DialogDescription>
-            Make changes to your product here. Click create when you're done.
+            Make changes to your product here. Click{" "}
+            {`${isEdit ? "update" : "create"}`} when you're done.
           </DialogDescription>
         </DialogHeader>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -171,7 +185,7 @@ const CreateOrUpdateProducts = ({
                 onUploadSuccess={handleUploadSuccess}
               />
               {errors?.product_photo?.message && (
-                <p className=" text-red-700 mt-1">
+                <p className=" text-red-500 mt-1">
                   {errors.product_photo.message as any}
                 </p>
               )}
@@ -191,7 +205,7 @@ const CreateOrUpdateProducts = ({
                   {...register("product_title")}
                 />
                 {errors?.product_title?.message && (
-                  <p className=" text-red-700 mt-1">
+                  <p className=" text-red-500 mt-1">
                     {errors.product_title.message as any}
                   </p>
                 )}
@@ -210,7 +224,7 @@ const CreateOrUpdateProducts = ({
                   {...register("product_price")}
                 />
                 {errors?.product_price?.message && (
-                  <p className=" text-red-700 mt-1">
+                  <p className=" text-red-500 mt-1">
                     {errors.product_price.message as any}
                   </p>
                 )}
@@ -230,7 +244,7 @@ const CreateOrUpdateProducts = ({
                   {...register("product_type")}
                 />
                 {errors?.product_type?.message && (
-                  <p className=" text-red-700 mt-1">
+                  <p className=" text-red-500 mt-1">
                     {errors.product_type.message as any}
                   </p>
                 )}
@@ -248,8 +262,105 @@ const CreateOrUpdateProducts = ({
                   {...register("product_handle")}
                 />
                 {errors?.product_handle?.message && (
-                  <p className=" text-red-700 mt-1">
+                  <p className=" text-red-500 mt-1">
                     {errors.product_handle.message as any}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-y-2 md:flex-row md:gap-x-2">
+              <div className="flex flex-col w-full gap-y-2 md:flex-row md:items-center md:gap-x-2">
+                <div className="flex flex-col items-start gap-y-[6px] w-full">
+                  <Label htmlFor="life" className="text-right">
+                    Product Live
+                  </Label>
+                  <div className="w-full">
+                    <Controller
+                      control={control}
+                      name="life"
+                      defaultValue={
+                        isEdit && productData?.life
+                          ? {
+                              label: `${productData?.life}`,
+                              value: `${productData?.life.value}`,
+                            }
+                          : ""
+                      }
+                      render={({ field }) => (
+                        <Select
+                          id="life"
+                          styles={{
+                            placeholder: (base) => ({
+                              ...base,
+                              color: "#ccc",
+                              fontSize: "14px",
+                            }),
+                            control: (base, state) => ({
+                              ...base,
+                              border: state.isFocused
+                                ? "1px solid #ccc"
+                                : "1px solid #ccc",
+                              boxShadow: state.isFocused
+                                ? "0 0 0 1px #ccc"
+                                : "0",
+                              "&:hover": {
+                                border: state.isFocused
+                                  ? "1px solid #ccc"
+                                  : "1px solid #ccc",
+                              },
+                              fontSize: "15px",
+                              height: "43px",
+                              fontWeight: "500",
+                              borderRadius: "6px",
+                            }),
+                            option: (base, { isFocused, isSelected }) => ({
+                              ...base,
+                              backgroundColor: isSelected
+                                ? "rgb(0,150,149)"
+                                : isFocused
+                                ? " rgb(209 250 229)"
+                                : "transparent",
+                              cursor: "pointer",
+                            }),
+                            menu: (base) => ({
+                              ...base,
+                              fontSize: "15px",
+                              fontWeight: "500",
+                            }),
+                            indicatorSeparator: (base) => ({
+                              ...base,
+                              display: "none",
+                            }),
+                          }}
+                          {...field}
+                          isSearchable={false}
+                          placeholder="Live"
+                          options={productLife}
+                          onChange={(selectedOption) => {
+                            field.onChange(selectedOption);
+                          }}
+                          value={field.value}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-start gap-y-2 w-full">
+                <Label htmlFor="product manufacturing" className="text-right">
+                  Product Manufacturing
+                </Label>
+                <Input
+                  id="product manufacturing"
+                  className={`focus-visible:ring-offset-0 focus-visible:ring-0 ${
+                    errors.manufacturing && "border border-red-500"
+                  }`}
+                  defaultValue={isEdit ? productData?.manufacturing : ""}
+                  {...register("manufacturing")}
+                />
+                {errors?.manufacturing?.message && (
+                  <p className=" text-red-500 mt-1">
+                    {errors.manufacturing.message as any}
                   </p>
                 )}
               </div>
@@ -292,7 +403,7 @@ const CreateOrUpdateProducts = ({
                 {...register("product_description")}
               />
               {errors?.product_description?.message && (
-                <p className=" text-red-700 mt-1">
+                <p className=" text-red-500 mt-1">
                   {errors.product_description.message as any}
                 </p>
               )}
@@ -371,7 +482,7 @@ const CreateOrUpdateProducts = ({
                     )}
                   />
                   {errors?.category_id?.message && (
-                    <p className=" text-red-700 mt-1">
+                    <p className=" text-red-500 mt-1">
                       {errors.category_id.message as any}
                     </p>
                   )}
@@ -385,7 +496,9 @@ const CreateOrUpdateProducts = ({
                 Cancel
               </Button>
             </DialogTrigger>
-            <Button type="submit">{isEdit ? "Update" : "Create"}</Button>
+            <Button className="bg-blue-800" type="submit">
+              {isEdit ? "Update" : "Create"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

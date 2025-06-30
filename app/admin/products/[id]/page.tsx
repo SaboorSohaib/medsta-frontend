@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import CreateProducts from "../../../customComponents/CreateOrUpdateProducts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const SingleProduct = () => {
   const param = useParams();
@@ -14,6 +15,9 @@ const SingleProduct = () => {
     <main>
       <section className="flex flex-col gap-y-4 lg:flex-row lg:justify-between items-start">
         <Card className={cn("max-w-max")}>
+          <Link className="px-2 py-4" href={"/admin/products"}>
+            Back
+          </Link>
           <CardHeader>
             <CardTitle>Product Details</CardTitle>
           </CardHeader>
