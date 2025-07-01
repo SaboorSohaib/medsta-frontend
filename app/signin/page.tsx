@@ -30,26 +30,26 @@ const Signin = () => {
   const onSubmit = async (data: any) => {
     try {
       const signinedInUser = await signin(data).unwrap();
-      router.push(
-        signinedInUser.data.role === "user" && itesmInCart?.length > 0
-          ? "/check-out"
-          : signinedInUser.data.role === "admin" && itesmInCart?.length > 0
-          ? "/check-out"
-          : signinedInUser.data.role === "admin" && itesmInCart?.length === 0
-          ? "/admin"
-          : signinedInUser.data.role === "user" && itesmInCart?.length === 0
-          ? "/user-profile"
-          : "",
-        {
-          scroll: true,
-        }
-      );
       if (signinedInUser.success) {
         toast({
           variant: "success",
           title: "Success",
           description: "Signed successfully.",
         });
+        router.push(
+          signinedInUser.data.role === "user" && itesmInCart?.length > 0
+            ? "/check-out"
+            : signinedInUser.data.role === "admin" && itesmInCart?.length > 0
+            ? "/check-out"
+            : signinedInUser.data.role === "admin" && itesmInCart?.length === 0
+            ? "/admin"
+            : signinedInUser.data.role === "user" && itesmInCart?.length === 0
+            ? "/user-profile"
+            : "",
+          {
+            scroll: true,
+          }
+        );
       }
       return signinedInUser;
     } catch (error: any) {
