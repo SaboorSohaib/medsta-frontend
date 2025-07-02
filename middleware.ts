@@ -5,9 +5,9 @@ import { jwtVerify } from "jose";
 // Middleware function
 export async function middleware(req: NextRequest) {
   const localToken = req.cookies.get("token");
-  const vercelToken = req.cookies.get("_vercel_jwt");
+  // const vercelToken = req.cookies.get("_vercel_jwt");
 
-  const token = localToken || vercelToken;
+  const token = localToken;
   const url = req.nextUrl.clone();
   if (!token) {
     if (
