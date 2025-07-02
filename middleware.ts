@@ -1,18 +1,21 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { jwtVerify } from "jose";
 
 // Middleware function
 export async function middleware(req: NextRequest) {
-  const token = req.cookies.get('token');
+  const localToken = req.cookies.get("token");
+  const vercelToken = req.cookies.get("_vercel_jwt");
+
+  const token = localToken || vercelToken;
 
   const url = req.nextUrl.clone();
   if (!token) {
     if (
-      url.pathname.startsWith('/admin') ||
-      url.pathname.startsWith('/user-profile')
+      url.pathname.startsWith("/admin") ||
+      url.pathname.startsWith("/user-profile")
     ) {
-      url.pathname = '/signin';
+      url.pathname = "/signin";
       return NextResponse.redirect(url);
     }
     return NextResponse.next();
@@ -24,16 +27,16 @@ export async function middleware(req: NextRequest) {
 
     const role = payload.role;
 
-    if (url.pathname.startsWith('/admin')) {
-      if (role === 'admin') {
+    if (url.pathname.startsWith("/admin")) {
+      if (role === "admin") {
         return NextResponse.next();
       } else {
-        url.pathname = '/user-profile';
+        url.pathname = "/user-profile";
         return NextResponse.redirect(url);
       }
     }
   } catch (error: any) {
-    url.pathname = '/signin';
+    url.pathname = "/signin";
     return NextResponse.redirect(url);
   }
 
