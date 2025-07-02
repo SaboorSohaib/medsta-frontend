@@ -55,8 +55,6 @@ const ProductDetailsData = ({
   const { toast } = useToast();
   const [crateProductReview] = useCrateProductReviewMutation();
   const onSubmit = async (data: any) => {
-    console.log("data.review_rating", data.review_rating);
-
     const ReviewData = {
       reviewer_name: data.reviewer_name,
       reviewer_email: data.reviewer_email,
@@ -142,10 +140,6 @@ const ProductDetailsData = ({
                       </div>
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map((star) => {
-                          console.log(
-                            "🚀 ~ {[1,2,3,3.5,4,5].map ~ star:",
-                            star
-                          );
                           return (
                             <Star
                               key={star}

@@ -4,7 +4,6 @@ import React from "react";
 
 const Dashboard = () => {
   const { data } = useGetOrderCalculationQuery("");
-  console.log("🚀 ~ Dashboard ~ data:", data?.data);
 
   return (
     <main className="flex flex-col gap-5">

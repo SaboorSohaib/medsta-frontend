@@ -29,7 +29,6 @@ const ContactUS = () => {
   const onSubmit = async (data: any) => {
     try {
       const submit = await submitForm(data).unwrap();
-      // console.log("🚀 ~ onSubmit ~ data:", { data });
       if (submit.success) {
         reset();
         toast({
