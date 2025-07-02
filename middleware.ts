@@ -8,7 +8,6 @@ export async function middleware(req: NextRequest) {
   const vercelToken = req.cookies.get("_vercel_jwt");
 
   const token = localToken || vercelToken;
-
   const url = req.nextUrl.clone();
   if (!token) {
     if (
