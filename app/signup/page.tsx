@@ -82,7 +82,7 @@ const Signup = () => {
         <article className="flex gap-x-2 justify-evenly w-full">
           <Link
             className="shadow-md text-center text-white p-3 bg-orange-500 w-full"
-            href={""}
+            href={"/signup"}
           >
             Register
           </Link>

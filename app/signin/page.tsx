@@ -23,7 +23,7 @@ const Signin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(singinSchema) });
-  const itesmInCart = useSelector((state: any) => state.cart.cartItems);
+  const itemsInCart = useSelector((state: any) => state.cart.cartItems);
   const router = useRouter();
   const { toast } = useToast();
   const [signin, { isLoading }] = useSigninMutation();
@@ -36,27 +36,24 @@ const Signin = () => {
           title: "Success",
           description: "Signed successfully.",
         });
-        router.push(
-          signinedInUser.data.role === "user" && itesmInCart?.length > 0
-            ? "/check-out"
-            : signinedInUser.data.role === "admin" && itesmInCart?.length > 0
-            ? "/check-out"
-            : signinedInUser.data.role === "admin" && itesmInCart?.length === 0
-            ? "/admin"
-            : signinedInUser.data.role === "user" && itesmInCart?.length === 0
-            ? "/user-profile"
-            : "",
-          {
-            scroll: true,
-          }
-        );
+        const { role } = signinedInUser.data;
+
+        if (itemsInCart?.length > 0) {
+          router.push("/check-out");
+        } else if (role === "admin") {
+          router.push("/admin");
+        } else if (role === "user") {
+          router.push("/user-profile");
+        } else {
+          router.push("/");
+        }
       }
       return signinedInUser;
     } catch (error: any) {
       toast({
         variant: "error",
         title: "Error",
-        description: error.data.message,
+        description: error.data.message || "Something went wrong.",
       });
     }
   };
@@ -77,7 +74,7 @@ const Signin = () => {
           </Link>
           <Link
             className="shadow-md text-center text-white p-3 bg-orange-500 w-full"
-            href={""}
+            href={"/signin"}
           >
             Sign in
           </Link>
@@ -86,7 +83,7 @@ const Signin = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-y-4 justify-center bg-white items-center w-full shadow-md p-10"
         >
-          <p className="text-2xl font-semibold">Sing in to Your Account</p>
+          <p className="text-2xl font-semibold">Sign in to Your Account</p>
           <div className="flex flex-col gap-y-2 w-full">
             <div className="flex flex-col gap-y-2 w-full">
               <Label htmlFor="email" className="text-sm">
