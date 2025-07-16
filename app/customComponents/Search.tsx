@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchProductQuery } from "@/redux/api/productApi";
 import debounce from "lodash.debounce";
 import { SearchIcon } from "lucide-react";
@@ -12,12 +12,9 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const debouncedSearch = useCallback(
-    debounce((value: any) => {
-      setDebouncedQuery(value);
-    }, 500),
-    []
-  );
+  const debouncedSearch = debounce((value: any) => {
+    setDebouncedQuery(value);
+  }, 500);
   const handleChange = (e: any) => {
     setSearchTerm(e.target.value);
     debouncedSearch(e.target.value);

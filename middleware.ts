@@ -41,23 +41,44 @@
 
 //   return NextResponse.next();
 // }
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("token");
+  const url = req.nextUrl.clone();
 
-  // Only block protected routes if token is missing
-  if (
-    !token &&
-    (req.nextUrl.pathname.startsWith("/admin") ||
-      req.nextUrl.pathname.startsWith("/user-profile") ||
-      req.nextUrl.pathname.startsWith("/check-out"))
-  ) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/signin";
-    return NextResponse.redirect(url);
+  // Check if path is inside the (Admin) folder
+  const protectedPaths = [
+    "/admin",
+    "/admin/blogs",
+    "/admin/categories",
+    "/admin/customers",
+    "/admin/orders",
+    "/admin/products",
+    "/admin/productReviews",
+  ];
+
+  if (protectedPaths.some((path) => url.pathname.startsWith(path))) {
+    const token = req.cookies.get("token");
+
+    if (!token) {
+      url.pathname = "/signin";
+      return NextResponse.redirect(url);
+    }
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    "/admin/:path*",
+    "/admin/blogs/:path*",
+    "/admin/categories/:path*",
+    "/admin/customers/:path*",
+    "/admin/orders/:path*",
+    "/admin/products/:path*",
+    "/admin/productReviews/:path*",
+  ],
+};
