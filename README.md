@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛍️ Medsta Front-End
 
-## Getting Started
+**Medsta Front-End** is the client-side of the Medsta e-commerce web application, built with **Next.js** and designed to provide a smooth shopping experience. It integrates seamlessly with the Medsta backend and supports user and admin features.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🎯 Purpose
+
+Deliver a responsive, dynamic e-commerce platform where users can:
+
+- Browse and search products
+- Add items to their cart and checkout
+- Read blogs and product reviews
+- Manage their orders and profiles
+- Access an admin panel to manage products, categories, blogs, etc.
+
+---
+
+## 🚀 Features
+
+- 🏠 **Home Page**
+- 🛒 **Product Listing & Detail Pages**
+- 🧺 **Shopping Cart & Checkout**
+- 🧑 **User Profile & Orders**
+- 📝 **Blog Section**
+- ⚙️ **Admin Panel** (for managing products, categories, blogs)
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org/)
+- **Data Fetching**: [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
+- **API Integration**: Medsta Backend (NestJS + PostgreSQL)
+- **Authentication**: JWT stored in cookies
+- **Image Uploads**: Integrated with [ImageKit.io](https://imagekit.io/)
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env.local` file in the root directory and add the following:
+
+```env
+NEXT_PUBLIC_PUBLIC_KEY=your_imagekit_public_key
+NEXT_PUBLIC_URL_ENDPOINT=your_imagekit_url_endpoint
+PRIVATE_KEY=your_imagekit_private_key
+JWT_SECRET=your_jwt_secret
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧱 Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+# Clone the repository
+git clone git@github.com:SaboorSohaib/medsta-frontend.git
+cd medsta-frontend
 
-## Learn More
+# Install dependencies
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ▶️ Running the Project
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+# Start the development server
+npm run dev
 
-## Deploy on Vercel
+# Production build
+npm run build
+npm start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The app will run on:  
+`http://localhost:3000`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+
+## 📦 Folder Structure
+
+```
+app/
+├── about-us/              # About us page
+├── admin/                 # Admin panel views
+├── api/                   # Imagekit API interaction layer
+├── blog/                  # Blog section
+├── cart/                  # Shopping cart pages
+├── check-out/             # Checkout flow
+├── customComponents/      # Custom reusable components
+├── faq/                   # FAQ section
+├── products/              # Product-related pages
+├── signin/                # Sign-in page
+├── signup/                # Sign-up page
+├── user-profile/          # User profile and order management
+
+ComponentsUI/              # shadcn UI components
+hooks/                     # Custom React hooks
+lib/                       # Utility libraries and helpers
+redux/                     # Redux Toolkit slices and store setup
+```
+
+---
+
+## 🧾 Notes
+
+- Ensure your backend (`Medsta API`) is running and accessible.
+- ImageKit is used for image uploads—credentials are required in `.env.local`.
+
+---
+
+## 🤝 Contributing
+
+Feel free to open issues or pull requests for improvements or bug fixes.
+
+---
+
+## 👨‍💻 Author
+
+Built with ❤️ by Abdul Saboor Sohaib.
