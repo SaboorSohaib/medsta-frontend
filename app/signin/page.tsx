@@ -36,17 +36,16 @@ const Signin = () => {
           title: "Success",
           description: "Signed successfully.",
         });
-
         const { role } = signinedInUser.data;
 
         if (itemsInCart?.length > 0) {
-          window.location.href = "/check-out";
+          router.push("/check-out");
         } else if (role === "admin") {
-          window.location.href = "/admin";
+          router.push("/admin");
         } else if (role === "user") {
-          window.location.href = "/user-profile";
+          router.push("/user-profile");
         } else {
-          window.location.href = "/";
+          router.push("/");
         }
       }
       return signinedInUser;

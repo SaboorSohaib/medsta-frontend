@@ -6,7 +6,6 @@ import {
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { useSelector } from "react-redux";
 import { ShoppingCart } from "lucide-react";
@@ -62,7 +61,6 @@ const Navbar = () => {
             About Us
           </Link>
           <Button
-            // href={""}
             onClick={
               userData?.data?.role === "user"
                 ? () => router.push("/user-profile")

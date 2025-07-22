@@ -42,42 +42,44 @@
 //   return NextResponse.next();
 // }
 
-// import { NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-// export function middleware(req: NextRequest) {
-//   const url = req.nextUrl.clone();
+export function middleware(req: NextRequest) {
+  const url = req.nextUrl.clone();
 
-//   const protectedPaths = [
-//     "/admin",
-//     "/admin/blogs",
-//     "/admin/categories",
-//     "/admin/customers",
-//     "/admin/orders",
-//     "/admin/products",
-//     "/admin/productReviews",
-//   ];
+  const protectedPaths = [
+    "/admin",
+    "/admin/blogs",
+    "/admin/categories",
+    "/admin/customers",
+    "/admin/orders",
+    "/admin/products",
+    "/admin/productReviews",
+    "/user-profile",
+  ];
 
-//   if (protectedPaths.some((path) => url.pathname.startsWith(path))) {
-//     const token = req.cookies.get("token");
+  if (protectedPaths.some((path) => url.pathname.startsWith(path))) {
+    const token = req.cookies.get("token")?.value;
 
-//     if (!token) {
-//       url.pathname = "/signin";
-//       return NextResponse.redirect(url);
-//     }
-//   }
+    if (!token) {
+      url.pathname = "/signin";
+      return NextResponse.redirect(url);
+    }
+  }
 
-//   return NextResponse.next();
-// }
+  return NextResponse.next();
+}
 
-// export const config = {
-//   matcher: [
-//     "/admin/:path*",
-//     "/admin/blogs/:path*",
-//     "/admin/categories/:path*",
-//     "/admin/customers/:path*",
-//     "/admin/orders/:path*",
-//     "/admin/products/:path*",
-//     "/admin/productReviews/:path*",
-//   ],
-// };
+export const config = {
+  matcher: [
+    "/admin/:path*",
+    "/admin/blogs/:path*",
+    "/admin/categories/:path*",
+    "/admin/customers/:path*",
+    "/admin/orders/:path*",
+    "/admin/products/:path*",
+    "/admin/productReviews/:path*",
+    "/user-profile/:path*",
+  ],
+};
